@@ -93,6 +93,10 @@ elseif (NOT WIN32)
 endif ()
 
 
+if (RELEASE_BUILD)
+    target_compile_options(${PROJECT_NAME} PUBLIC "$<$<CONFIG:RELEASE>:-Ofast>")
+    target_compile_options(${PROJECT_NAME} PUBLIC "$<$<CONFIG:RELEASE>:-mfpu=neon>")
+endif()
 
 # LSR bindings:
 
@@ -113,7 +117,7 @@ if (WITH_LSR_BINDINGS)
   elseif (NOT WIN32)
     set (TARGET_PCS "${TARGET_PCS} ${CMAKE_CURRENT_BINARY_DIR}/${LSR}.pc")
     configure_file (${CMAKE_CURRENT_SOURCE_DIR}/${LSR}.pc.in ${CMAKE_CURRENT_BINARY_DIR}/${LSR}.pc)
-    install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${LSR}.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig)
+    install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${LSR}.pc DESTINATION ${LIB_INSTALL_DIR}osepkgconfig)
   endif ()
 endif ()
 
@@ -127,3 +131,4 @@ install (TARGETS ${PROJECT_NAME} ${LSR}
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}
   ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
   PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR})
+
